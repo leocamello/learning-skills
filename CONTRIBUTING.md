@@ -11,7 +11,7 @@ We welcome domain-specific skills, better calibration examples, translations, ac
 3. For a new skill, create `skills/07-evidence-evaluator/SKILL.md` only if you are implementing the evidence-evaluation example below; otherwise choose the next unused numeric prefix and a descriptive kebab-case name. Do not rename established paths.
 4. Write the full protocol in imperative English. Keep learner-facing examples in their natural language. Include the Language Adaptation Rule below.
 5. Run the behavioral checks in this guide and record the actual output, model/client, date, and relevant settings. Do not present a simulated transcript as a measured result.
-6. Update both README catalogs and the orchestrator’s routing table when adding a skill. Check relative links, YAML, and all examples.
+6. Update both README catalogs and the orchestrator’s routing table when adding a skill. Regenerate its installable entrypoint with `python3 scripts/build-orchestrator.py`. Check relative links, YAML, and all examples.
 7. Open a PR with the problem, changed behavior, evidence, and limitations. Remove learner names, grades, student IDs, and private course material from transcripts.
 
 No paid account is required to contribute documentation. If you cannot run a model evaluation, say so explicitly; a reviewer can supply it. Do not invent a successful evaluation.
@@ -30,7 +30,20 @@ Every skill is standalone: it must work when the learner pastes only that file i
 | Verification Gate (Definition of Mastery) | A fresh unassisted task with pass criteria and a non-pass path. |
 | Few-Shot Calibration Examples | A concrete Bad/Passive LLM Response versus a Correct Skill-Guided Response, including recovery from difficulty. |
 
-The YAML block is the first of the seven components; the remaining six are Markdown sections. Use the existing skills as complete reference implementations. Keep files small enough to paste, but never omit a transition needed to prevent dead ends.
+The YAML block is the first of the seven components; the remaining six are Markdown sections. Use the existing learning skills as complete reference implementations. Keep files small enough to paste, but never omit a transition needed to prevent dead ends. The orchestrator is a routing entrypoint and retains its own routing protocol rather than duplicating a learning skill's anatomy.
+
+### Packaging the orchestrator
+
+`agents/learner-orchestrator.md` is the editable source for the router. `skills/00-learner-orchestrator/SKILL.md` is its generated, complete installation package, including discovery frontmatter. Commit both when changing the router. The installed file must work without the source repository or its `agents/` directory; resolve the six learning skills through the host catalog or their installed sibling paths.
+
+Run these checks before changing installation behavior:
+
+```bash
+python3 scripts/build-orchestrator.py --check
+npx skills add . --list
+```
+
+Discovery must list seven entries: the six learning skills and `learner-orchestrator`. Test a fresh project installation and adding only the router to an existing six-skill installation. Verify that all six sibling paths resolve and the existing skills retain their contents. Installing just the router without its learning skills must produce a clear missing-skill request, not an invented learning protocol.
 
 Names in this repository omit the numeric catalog prefix. Our documented copy procedure removes that prefix from installed folders so the installed directory matches `name`. `cognitive_principle` is a project extension, not a claim of strict compatibility with every Agent Skills parser. Preserve it in source; a strict client can move it into the installed copy’s body. See the [Agent Skills specification](https://agentskills.io/specification).
 
@@ -54,7 +67,7 @@ cognitive_principle: Critical thinking, self-explanation, and calibration of con
 
 Develop it around an actual task: the learner brings a claim about a teaching intervention and a research abstract. Diagnose by asking which observation supports the claim. Require the learner to identify a study limitation before proposing a stronger inference. If they cannot distinguish correlation from causation, supply a small contrasting example, then ask about a new study. Verify by having the learner evaluate an unseen abstract, including an alternative explanation and the evidence that would discriminate between explanations. Never fabricate a paper, infer causation solely from association, or mark confident rhetoric as mastery.
 
-This is a design recipe for a contribution, not an installed seventh skill. A submitted implementation must include all seven components and actual dialogue examples.
+This is a design recipe for a contribution, not an installed learning skill. A submitted implementation must include all seven components and actual dialogue examples.
 
 ## Cognitive science checklist
 

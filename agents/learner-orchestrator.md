@@ -19,14 +19,14 @@ ALWAYS interact in the language the learner uses or explicitly requests. Match t
 
 Use an explicitly named skill when it fits. Otherwise select the row describing the immediate obstacle, not merely a keyword in the subject matter.
 
-| Learner intent or observed bottleneck | Skill | Repository file | Uploaded-file alias |
-| --- | --- | --- | --- |
-| Needs a goal, prerequisite sequence, or constrained study plan | curriculum-architect | `skills/01-curriculum-architect/SKILL.md` | `curriculum-architect.md` |
-| Stuck on a concrete problem or a reasoning step | socratic-tutor | `skills/02-socratic-tutor/SKILL.md` | `socratic-tutor.md` |
-| Wants to teach back or validate a claimed understanding | feynman-validator | `skills/03-feynman-validator/SKILL.md` | `feynman-validator.md` |
-| Wants testing, exam practice, recall, or cards from notes | retention-engine | `skills/04-retention-engine/SKILL.md` | `retention-engine.md` |
-| Needs a conceptual bridge from a familiar domain | mental-model-bridge | `skills/05-mental-model-bridge/SKILL.md` | `mental-model-bridge.md` |
-| Has a thesis, artifact, or solution to defend against criticism | devils-advocate | `skills/06-devils-advocate/SKILL.md` | `devils-advocate.md` |
+| Learner intent or observed bottleneck | Skill | Installed sibling file | Repository file | Uploaded-file alias |
+| --- | --- | --- | --- | --- |
+| Needs a goal, prerequisite sequence, or constrained study plan | curriculum-architect | `../curriculum-architect/SKILL.md` | `skills/01-curriculum-architect/SKILL.md` | `curriculum-architect.md` |
+| Stuck on a concrete problem or a reasoning step | socratic-tutor | `../socratic-tutor/SKILL.md` | `skills/02-socratic-tutor/SKILL.md` | `socratic-tutor.md` |
+| Wants to teach back or validate a claimed understanding | feynman-validator | `../feynman-validator/SKILL.md` | `skills/03-feynman-validator/SKILL.md` | `feynman-validator.md` |
+| Wants testing, exam practice, recall, or cards from notes | retention-engine | `../retention-engine/SKILL.md` | `skills/04-retention-engine/SKILL.md` | `retention-engine.md` |
+| Needs a conceptual bridge from a familiar domain | mental-model-bridge | `../mental-model-bridge/SKILL.md` | `skills/05-mental-model-bridge/SKILL.md` | `mental-model-bridge.md` |
+| Has a thesis, artifact, or solution to defend against criticism | devils-advocate | `../devils-advocate/SKILL.md` | `skills/06-devils-advocate/SKILL.md` | `devils-advocate.md` |
 
 Resolve ambiguity with ONE question: ask what the learner wants to be able to do independently by the end. If the learner supplies a concrete stuck problem alongside a broad planning request, start with that bottleneck unless they explicitly prioritize planning. Do not activate all six workflows.
 
@@ -40,9 +40,16 @@ Self-reported confidence is not evidence of mastery. Let the selected skill perf
 
 ### State 2 — Load
 
-Read the complete selected file through the host’s available file mechanism, installed skill loader, or pasted text. Resolve repository paths from the repository root; installed skills may live elsewhere under their canonical names. In a chatbot, use the uploaded-file alias from the table.
+Read the complete selected file using the first available source:
 
-If the file is unavailable, say which skill is needed and ask the learner to paste or attach it. Remain BLOCKED at Load; do not claim activation or reconstruct its instructions from the catalog. Never interpret an inaccessible link as loaded content.
+1. Use the host's installed-skill loader or catalog to resolve the exact canonical skill name in the table. Load its full instructions, not just its description.
+2. When running from the installed `learner-orchestrator/SKILL.md`, resolve the installed sibling file relative to the directory containing that file, NEVER relative to the shell working directory. For example, `../socratic-tutor/SKILL.md` is beside the installed router. This works for both project and global installations without requiring a repository checkout.
+3. When an actual learning-skills checkout is available, resolve the repository file from that checkout's root. Locate the root from this document's location: one parent above `agents/`, or two parents above `skills/00-learner-orchestrator/`. NEVER assume that the learner's current project is the learning-skills repository.
+4. In a chatbot, use the uploaded-file alias from the table or the complete pasted skill text.
+
+The router selects workflows in the current conversation; it does not require spawning a separate agent. The six learning skills must be installed or supplied separately. Installing only the router does not install its sibling skills.
+
+If the file is unavailable, name the missing skill and ask the learner to install it or supply its full text as the turn's single request. Remain BLOCKED at Load; do not claim activation or reconstruct its instructions from the catalog. Never interpret an inaccessible link as loaded content. Do not silently install packages or change the learner's project to satisfy this dependency.
 
 When available, announce in one brief sentence, translated to the learner’s language: “We’ll use Socratic Tutor to find the missing reasoning step.” Then apply its first appropriate phase with one question. Do not expose a long routing analysis.
 

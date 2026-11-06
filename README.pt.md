@@ -6,7 +6,7 @@
 
 **Deixa de usar a IA como muleta. Usa-a como ginásio para o pensamento.**
 
-Reconhecer uma resposta não é saber chegar a ela. Estes seis ficheiros de instruções transformam a IA num tutor que te pede para recordar, explicar, aplicar e defender o que sabes. O raciocínio é teu. O agente propõe o próximo desafio útil.
+Reconhecer uma resposta não é saber chegar a ela. Seis skills de aprendizagem e um orquestrador transformam a IA num tutor que te pede para recordar, explicar, aplicar e defender o que sabes. O raciocínio é teu. O agente propõe o próximo desafio útil.
 
 [English](README.md) · [Demonstrações ao vivo](examples/Before-And-After-PT.md) · [Contribuir](CONTRIBUTING.md) · [Licença MIT](LICENSE)
 
@@ -21,6 +21,7 @@ Reconhecer uma resposta não é saber chegar a ela. Estes seis ficheiros de inst
 
 | Skill | Usa quando… | O que vais fazer | Evidência de progresso |
 | --- | --- | --- | --- |
+| 🚦 [Learner Orchestrator](skills/00-learner-orchestrator/SKILL.md) | «Ajuda-me a escolher como estudar isto.» | Descrever o objetivo; o orquestrador escolhe uma skill instalada. | Cumprir a verificação autónoma dessa skill. |
 | 🗺️ [Curriculum Architect](skills/01-curriculum-architect/SKILL.md) | «Quero aprender X. Por onde começo?» | Identificar pré-requisitos e construir uma sequência focada. | Concluir um pequeno projeto verificável em cada etapa. |
 | 🧭 [Socratic Tutor](skills/02-socratic-tutor/SKILL.md) | «Estou bloqueado neste exercício.» | Responder a uma pergunta de cada vez, com pistas progressivas. | Resolver uma variante nova sem ajuda. |
 | 🗣️ [Feynman Validator](skills/03-feynman-validator/SKILL.md) | «Acho que já percebi.» | Ensinar um principiante curioso, sem te esconderes atrás de jargão. | Explicar o mecanismo e um caso desconhecido. |
@@ -28,7 +29,7 @@ Reconhecer uma resposta não é saber chegar a ela. Estes seis ficheiros de inst
 | 🌉 [Mental Model Bridge](skills/05-mental-model-bridge/SKILL.md) | «Preciso de perceber esta ideia nova.» | Relacioná-la com algo que dominas e identificar os limites da analogia. | Raciocinar sobre o conceito sem depender da comparação. |
 | ⚔️ [Devil’s Advocate](skills/06-devils-advocate/SKILL.md) | «Põe o meu argumento ou projeto à prova.» | Defender pressupostos e corrigir afirmações frágeis. | Responder a um contraexemplo novo com evidência. |
 
-Não sabes qual escolher? Usa o [Learner Orchestrator](agents/learner-orchestrator.md). Identifica a dificuldade imediata e ativa **uma skill de cada vez**. Podes fazer uma pausa, mudar de língua ou sair do modo de aprendizagem a qualquer momento.
+Não sabes qual escolher? Começa pelo [Learner Orchestrator](skills/00-learner-orchestrator/SKILL.md). É uma skill instalável que identifica a dificuldade imediata e ativa **uma skill de cada vez**. Instala-a juntamente com as seis skills de aprendizagem para que possa carregar os respetivos protocolos completos. Podes fazer uma pausa, mudar de língua ou sair do modo de aprendizagem a qualquer momento.
 
 ## Começa em 30 segundos: qualquer chatbot
 
@@ -65,7 +66,35 @@ Para teres encaminhamento automático, coloca o corpo do [orquestrador](agents/l
 
 ## Começa em 30 segundos: terminal e IDE
 
-**O caminho mais rápido:** descarrega o repositório em **Code → Download ZIP**, extrai-o e abre-o no editor. Na conversa com o agente, anexa `skills/02-socratic-tutor/SKILL.md` e escreve:
+Com Node.js e npm disponíveis, executa este comando **na pasta onde queres estudar**:
+
+```bash
+npx skills add leocamello/learning-skills
+```
+
+Seleciona **as sete skills**, incluindo `learner-orchestrator`, e o teu cliente. Por predefinição, a instalação fica no projeto; acrescenta `-g` para a disponibilizar ao teu utilizador em todos os projetos. O orquestrador é uma skill que encaminha a sessão para uma das outras seis, por isso mantém as sete no mesmo cliente e âmbito de instalação. Consulta a [referência de comandos do instalador](https://github.com/vercel-labs/skills/blob/main/docs/commands.md).
+
+Depois, abre o agente nessa pasta. No Codex, começa com:
+
+```text
+$learner-orchestrator Quero aprender cibersegurança. Sei o básico de redes e tenho 30 minutos. Conversa comigo em português.
+```
+
+No Claude Code, usa `/learner-orchestrator` seguido do mesmo pedido. Nos outros clientes, seleciona a skill ou pede explicitamente para usar `learner-orchestrator`. Se o cliente já aberto não mostrar as novas skills, inicia uma sessão nova na pasta da instalação.
+
+### Já instalaste uma versão anterior?
+
+O pacote inicial incluía apenas as seis skills de aprendizagem. Para acrescentar o orquestrador em falta, executa este comando na pasta dessa instalação:
+
+```bash
+npx skills add leocamello/learning-skills --skill learner-orchestrator
+```
+
+Escolhe o mesmo cliente que usaste antes. Acrescenta `-g` se a instalação original era global. Este comando seleciona apenas o orquestrador; não precisas de reinstalar as seis skills de aprendizagem. Não regista um agente separado em segundo plano nem inicia tutores em paralelo.
+
+### Sem Node.js
+
+Descarrega o repositório em **Code → Download ZIP**, extrai-o e abre-o no editor. Na conversa com o agente, anexa `skills/02-socratic-tutor/SKILL.md` e escreve:
 
 ```text
 Lê este SKILL.md e usa socratic-tutor para me ajudar a compreender um JOIN que está a falhar. Faz uma pergunta e espera pela minha resposta. Não alteres ficheiros nem executes a solução por mim.
@@ -73,7 +102,7 @@ Lê este SKILL.md e usa socratic-tutor para me ajudar a compreender um JOIN que 
 
 Este método também funciona se o cliente não reconhecer skills automaticamente.
 
-Para descoberta nativa no projeto, copia as seis pastas para o diretório de skills do teu cliente. Na raiz do repositório extraído, executa o seguinte em **Bash, Terminal do macOS, Linux, WSL ou Git Bash**. A instalação fica no projeto atual, não é global:
+Para descoberta nativa no projeto, copia as sete pastas para o diretório de skills do teu cliente. Na raiz do repositório extraído, executa o seguinte em **Bash, Terminal do macOS, Linux, WSL ou Git Bash**. A instalação fica no projeto atual, não é global:
 
 ```bash
 # Claude Code; escolhe outro destino na tabela se necessário.
@@ -92,12 +121,13 @@ done
 
 | Cliente | Valor de `destination` | Como começar |
 | --- | --- | --- |
-| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills` | `/socratic-tutor Ajuda-me a compreender JOINs em SQL` |
-| [Cursor](https://cursor.com/docs/skills) | `.cursor/skills` | Seleciona `socratic-tutor` no menu `/` ou pede explicitamente para o usar. |
-| [GitHub Copilot](https://docs.github.com/en/copilot/concepts/customizations/agent-skills) | `.github/skills` | Pede ao agente do Copilot que use `socratic-tutor`; o suporte depende do cliente e da versão. |
-| **Windsurf** | `.windsurf/skills` ([mapeamento mantido pelo instalador](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)) | Pede ao Cascade que use `socratic-tutor`; se a descoberta não estiver disponível, anexa o ficheiro explicitamente. |
+| [Codex](https://learn.chatgpt.com/docs/build-skills) | `.agents/skills` | `$learner-orchestrator Ajuda-me a aprender JOINs em SQL` |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills` | `/learner-orchestrator Ajuda-me a aprender JOINs em SQL` |
+| [Cursor](https://cursor.com/docs/skills) | `.cursor/skills` | Seleciona `learner-orchestrator` no menu `/` ou pede explicitamente para o usar. |
+| [GitHub Copilot](https://docs.github.com/en/copilot/concepts/customizations/agent-skills) | `.github/skills` | Pede ao agente do Copilot que use `learner-orchestrator`; o suporte depende do cliente e da versão. |
+| **Windsurf** | `.windsurf/skills` ([mapeamento mantido pelo instalador](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)) | Pede ao Cascade que use `learner-orchestrator`; se a descoberta não estiver disponível, anexa o ficheiro explicitamente. |
 
-As pastas numeradas mantêm o catálogo ordenado. Os nomes das pastas instaladas coincidem com o campo `name` do cabeçalho YAML. Incluímos o campo de projeto `cognitive_principle`; um cliente com validação estrita pode rejeitá-lo. Nesse caso, move-o para o corpo Markdown **na cópia instalada** ou usa o método de anexar o ficheiro. Não precisas de um ambiente de execução específico. Para remover uma skill copiada, apaga a respetiva pasta de instalação; a origem mantém-se.
+As pastas numeradas mantêm o catálogo ordenado. Os nomes das pastas instaladas coincidem com o campo `name` do cabeçalho YAML. As seis skills de aprendizagem incluem o campo de projeto `cognitive_principle`; um cliente com validação estrita pode rejeitá-lo. Nesse caso, move-o para o corpo Markdown **na cópia instalada** ou usa o método de anexar o ficheiro. Não precisas de um ambiente de execução específico. Para remover uma skill copiada, apaga a respetiva pasta de instalação; a origem mantém-se.
 
 ## Experimenta uma sessão útil
 

@@ -4,7 +4,7 @@
 
 **Stop using AI as a crutch; use it as a cognitive gym.**
 
-An answer you recognize is not a skill you can use. These six reusable instruction files turn your AI into a tutor that asks you to retrieve, explain, apply, and defend what you know. You do the thinking. The agent supplies the next useful challenge.
+An answer you recognize is not a skill you can use. Six learning skills and a learner orchestrator turn your AI into a tutor that asks you to retrieve, explain, apply, and defend what you know. You do the thinking. The agent supplies the next useful challenge.
 
 [Português](README.pt.md) · [Try a live demo](examples/Before-And-After-PT.md) · [Contribute](CONTRIBUTING.md) · [MIT license](LICENSE)
 
@@ -19,6 +19,7 @@ An answer you recognize is not a skill you can use. These six reusable instructi
 
 | Skill | Reach for it when… | What you actually do | Evidence of progress |
 | --- | --- | --- | --- |
+| 🚦 [Learner Orchestrator](skills/00-learner-orchestrator/SKILL.md) | “Help me choose how to study this.” | Describe your goal; the router selects one installed learning skill. | Follow that skill’s independent verification gate. |
 | 🗺️ [Curriculum Architect](skills/01-curriculum-architect/SKILL.md) | “I want to learn X. Where do I start?” | Diagnose prerequisites and build a focused sequence. | Complete a small, observable project at each node. |
 | 🧭 [Socratic Tutor](skills/02-socratic-tutor/SKILL.md) | “I’m stuck on this problem.” | Answer one question at a time, with progressive hints. | Solve a fresh variant without hints. |
 | 🗣️ [Feynman Validator](skills/03-feynman-validator/SKILL.md) | “I think I understand this.” | Teach a skeptical novice in plain language. | Explain the mechanism and an unfamiliar case. |
@@ -26,7 +27,7 @@ An answer you recognize is not a skill you can use. These six reusable instructi
 | 🌉 [Mental Model Bridge](skills/05-mental-model-bridge/SKILL.md) | “Make this unfamiliar idea click.” | Map it to something you know; find the analogy’s limits. | Reason about the target without the analogy. |
 | ⚔️ [Devil’s Advocate](skills/06-devils-advocate/SKILL.md) | “Challenge my argument or design.” | Defend assumptions and repair weak claims. | Handle a new counterexample with evidence. |
 
-Unsure? Use the [Learner Orchestrator](agents/learner-orchestrator.md). It diagnoses the immediate bottleneck and routes to **one skill at a time**. You can pause, change language, or leave learning mode at any point.
+Unsure? Start with the [Learner Orchestrator](skills/00-learner-orchestrator/SKILL.md). It is an installable routing skill that diagnoses the immediate bottleneck and routes to **one skill at a time**. Install it alongside the six learning skills so it can load their complete protocols. You can pause, change language, or leave learning mode at any point.
 
 ## Start in 30 seconds: any web chatbot
 
@@ -63,7 +64,35 @@ To enable routing, put the [orchestrator](agents/learner-orchestrator.md) body i
 
 ## Start in 30 seconds: CLI and IDE agents
 
-**Fastest path:** download this repository with **Code → Download ZIP**, extract it, and open it in your editor. In your agent chat, attach `skills/02-socratic-tutor/SKILL.md` and say:
+With Node.js and npm available, run this **from the folder where you want to study**:
+
+```bash
+npx skills add leocamello/learning-skills
+```
+
+Select **all seven skills**, including `learner-orchestrator`, and your agent client. Project installation is the default; add `-g` to install for your user across projects. The orchestrator is a callable skill that routes to the other six, so keep all seven in the same client and installation scope. See the [installer’s command reference](https://github.com/vercel-labs/skills/blob/main/docs/commands.md).
+
+Then open your agent in that folder. In Codex, start with:
+
+```text
+$learner-orchestrator I want to learn cybersecurity. I know basic networking and have 30 minutes. Speak Portuguese with me.
+```
+
+In Claude Code, use `/learner-orchestrator` followed by the same request. In other clients, select the skill or explicitly ask to use `learner-orchestrator`. If a running client does not show newly installed skills, open a new session in the installation folder.
+
+### Already installed an earlier version?
+
+The initial package contained only the six learning skills. To add the missing orchestrator, run this from the folder containing that installation:
+
+```bash
+npx skills add leocamello/learning-skills --skill learner-orchestrator
+```
+
+Choose the same client as before. Add `-g` if your original installation was global. This targets only the router; you do not need to reinstall the six learning skills. It does not register a separate background agent or launch parallel tutors.
+
+### Without Node.js
+
+Download this repository with **Code → Download ZIP**, extract it, and open it in your editor. In your agent chat, attach `skills/02-socratic-tutor/SKILL.md` and say:
 
 ```text
 Read this SKILL.md and use socratic-tutor to help me reason about a failing JOIN. Ask one question, then wait for my answer. Do not modify files or run my solution for me.
@@ -71,7 +100,7 @@ Read this SKILL.md and use socratic-tutor to help me reason about a failing JOIN
 
 This explicit-file workflow also works when your client does not support native skill discovery.
 
-For native project discovery, copy the six folders into your client’s skill directory. From the extracted repository, run the following in **Bash, macOS Terminal, Linux, WSL, or Git Bash**. This installs into the current project, not globally:
+For native project discovery, copy all seven folders into your client’s skill directory. From the extracted repository, run the following in **Bash, macOS Terminal, Linux, WSL, or Git Bash**. This installs into the current project, not globally:
 
 ```bash
 # Claude Code; choose another destination from the table below if needed.
@@ -90,12 +119,13 @@ done
 
 | Client | Set `destination` to | Start the session |
 | --- | --- | --- |
-| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills` | `/socratic-tutor Help me understand SQL JOINs` |
-| [Cursor](https://cursor.com/docs/skills) | `.cursor/skills` | Select `socratic-tutor` from the `/` menu, or explicitly ask to use it. |
-| [GitHub Copilot](https://docs.github.com/en/copilot/concepts/customizations/agent-skills) | `.github/skills` | Ask Copilot’s agent to use `socratic-tutor`; skill support depends on the client/version. |
-| **Windsurf** | `.windsurf/skills` ([maintained installer mapping](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)) | Ask Cascade to use `socratic-tutor`; if discovery is unavailable, attach the file explicitly. |
+| [Codex](https://learn.chatgpt.com/docs/build-skills) | `.agents/skills` | `$learner-orchestrator Help me learn SQL JOINs` |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills` | `/learner-orchestrator Help me learn SQL JOINs` |
+| [Cursor](https://cursor.com/docs/skills) | `.cursor/skills` | Select `learner-orchestrator` from the `/` menu, or explicitly ask to use it. |
+| [GitHub Copilot](https://docs.github.com/en/copilot/concepts/customizations/agent-skills) | `.github/skills` | Ask Copilot’s agent to use `learner-orchestrator`; skill support depends on the client/version. |
+| **Windsurf** | `.windsurf/skills` ([maintained installer mapping](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)) | Ask Cascade to use `learner-orchestrator`; if discovery is unavailable, attach the file explicitly. |
 
-The numbered source folders keep the catalog ordered. Installed folder names match the frontmatter `name`. These files include the requested project field `cognitive_principle`; a strict host may reject unknown YAML fields. If so, move that field into the Markdown body **in your installed copy**, or use the explicit-file workflow. No client-specific runtime is required. To remove a copied skill, delete its installed folder; the source stays intact.
+The numbered source folders keep the catalog ordered. Installed folder names match the frontmatter `name`. The six learning-skill files include the requested project field `cognitive_principle`; a strict host may reject unknown YAML fields. If so, move that field into the Markdown body **in your installed copy**, or use the explicit-file workflow. No client-specific runtime is required. To remove a copied skill, delete its installed folder; the source stays intact.
 
 ## Try a useful session
 
