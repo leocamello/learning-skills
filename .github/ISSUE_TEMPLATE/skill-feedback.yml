@@ -1,0 +1,56 @@
+name: Skill feedback
+description: Report a learning interaction that failed, succeeded, or needs a clearer instruction.
+title: "[Skill feedback] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help improve the learning behavior with a concrete example. Remove personal details, private course material, and credentials before sharing. For proposed changes, follow the contributor guide in CONTRIBUTING.md, including its cognitive science checklist.
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill or component
+      options:
+        - 01-curriculum-architect
+        - 02-socratic-tutor
+        - 03-feynman-validator
+        - 04-retention-engine
+        - 05-mental-model-bridge
+        - 06-devils-advocate
+        - learner-orchestrator
+        - Installation or documentation
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Name the chatbot or coding agent, model if known, approximate date, and how you loaded the skill.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Learning context
+      description: Describe the topic, learner's starting knowledge, interaction language, and intended outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: interaction
+    attributes:
+      label: Observed interaction
+      description: Include the initiating prompt and relevant learner and assistant turns. Identify any skipped turns. Label simulations or scripted demonstrations explicitly.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected learning behavior
+      description: Explain what should have happened and which skill rule applies. Describe whether the learner could complete a new task without assistance.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement or evidence
+      description: Suggest a focused instruction change or link relevant research. Leave this field empty if you are only reporting observed behavior.
